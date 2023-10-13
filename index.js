@@ -20,7 +20,7 @@ const games = [
 ];
 
 app.get('/games', (req, res) => {
-    res.send(games);
+    res.send(games); //
 });
 
 app.get('/games/:id', (req, res) => {
