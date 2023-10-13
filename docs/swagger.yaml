@@ -70,6 +70,32 @@ paths:
             operationId: id
             summary: Get full details of a game
             description: Returns full details of a given id game
+        delete:
+          tags:
+              - delete
+          parameters:
+              -
+                  name: id
+                  schema:
+                      type: string
+                  in: path
+                  required: true
+          responses:
+              '204':
+                  content:
+                      application/json:
+                          schema:
+                              $ref: '#/components/schemas/delete-game'
+                  description: Game was deleted
+              '404':
+                  description: ID was not found
+          summary: Deleting game by id
+          description: wow
+          parameters:
+              -
+                  name: id
+                  in: path
+                  required: true
 components:
     schemas:
         error:
