@@ -23,6 +23,8 @@
                 <td>{{ game.price }}</td>
             </tr>
         </table> 
+
+
         <div id="gameInfoModal" class="modal" tabindex="-1">
             <div class="modal-dialog">
               <div class="modal-content">
@@ -52,6 +54,28 @@
             </div>
           </div>
         </div>
+        
+        <form @submit.prevent="addGame" style="margin: 10pt;">
+            <div class="form-group">
+                <label for="gameId">ID:</label>
+                <input type="text" id="gameId" v-model="newGame.id" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="gameName">Название:</label>
+                <input type="text" id="gameName" v-model="newGame.name" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="gamePrice">Цена:</label>
+                <input type="number" id="gamePrice" v-model="newGame.price" class="form-control" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Добавить игру</button>
+        </form>
+
+
+
     </div>
     <script src="rest-client.js"></script>
 </body>
