@@ -1,7 +1,4 @@
-# games-api
-Vue.js testing. Web page with server on Node.js. 
-
-## How to Start:
+# How to Start:
 Downdolad packages
 ```bash
 npm install express
