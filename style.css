@@ -1,0 +1,28 @@
+header {
+    background-color: #343a40;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+}
+footer {
+    background-color: #343a40;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+}
+input[type="text"],
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.addGameForm {
+    width: 40%;
+    margin: 0 auto;
+    padding: 20px;
+}
+td.editable {
+    cursor: pointer;
+}

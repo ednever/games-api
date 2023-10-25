@@ -1,44 +1,77 @@
 const vue = Vue.createApp({
     data() {
         return {
-            gameInModal: {name: null},
             games: [],
-            newGame: { id: null, name: null, price: null }
-        }
+            newGame: {
+                name: '',
+                price: 0
+            }
+        };
     },
     async created() {
         this.games = await (await fetch('http://localhost:8080/games')).json();
+        this.games.forEach(game => game.editing = false);
     },
     methods: {
-        getGame: async function (id) {
-            this.gameInModal = await (await fetch(`http://localhost:8080/games/${id}`)).json()
-            let gameInfoModal = new bootstrap.Modal(document.getElementById('gameInfoModal'), {})
-            gameInfoModal.show()
-        },
-        addGame: async function () {
-            // Подготовка данных для отправки на сервер
-            const data = {
-                id: this.newGame.id,
-                name: this.newGame.name,
-                price: this.newGame.price
-            };
+        editGameName(game) {
+    game.editing = true;
+    game.newName = game.name;
+},
+editGamePrice(game) {
+    game.editing = true;
+    game.newPrice = game.price;
+},
+updateGame(game) {
+    // Создайте объект с обновленными данными
+    const updatedGameData = {
+        name: game.newName,
+        price: parseFloat(game.newPrice)
+    };
 
-            // Отправка POST-запроса для добавления новой игры
-            const response = await fetch('http://localhost:8080/games/', {
+    // Отправьте запрос PUT на сервер для обновления данных игры
+    fetch(`http://localhost:8080/games/${game.id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedGameData)
+    })
+    .then(response => {
+        if (response.ok) {
+            // Если обновление прошло успешно, завершите редактирование
+            game.editing = false;
+            game.name = game.newName;
+            game.price = parseFloat(game.newPrice);
+        } else {
+            console.error('Ошибка при обновлении игры на сервере');
+        }
+    })
+    .catch(error => {
+        console.error('Произошла ошибка:', error);
+    });
+},
+        addGame: async function() {
+            const response = await fetch('http://localhost:8080/games', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify(this.newGame)
             });
-
             if (response.ok) {
-                // Если запрос успешен, обновляем список игр или выполняем другие действия
-                this.games = await response.json();
-            } else {
-                // Обработка ошибки, если не удалось добавить игру
-                console.error('Ошибка при добавлении игры');
+                const newGame = await response.json();
+                newGame.editing = false;
+                this.games.push(newGame);
+                this.newGame = { name: '', price: 0 };
+            }
+        },
+        deleteGame: async function(id) {
+            const response = await fetch(`http://localhost:8080/games/${id}`, {
+                method: 'DELETE'
+            });
+            if (response.ok) {
+                this.games = this.games.filter(game => game.id !== id);
             }
         }
     }
-}).mount('#app')
+}).mount('#app');
