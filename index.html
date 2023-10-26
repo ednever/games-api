@@ -30,8 +30,8 @@
         <table class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Price</th>
+                    <th>Name <nobr id="nameA" style="border: 1pt solid black; padding: 4px;" @click="sortGamesByName">↓</nobr></th>
+                    <th>Price <nobr id="nameB" style="border: 1pt solid black; padding: 4px;" @click="sortGames">↓</nobr></th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -47,7 +47,7 @@
                     </td>
                     <td @click="editGamePrice(game)" class="editable">
                         <span v-if="game.editing">
-                            <input type="number" step="0.01" v-model="game.newPrice">
+                            <input type="number" min="0" v-model="game.newPrice">
                         </span>
                         <span v-else>
                             {{ game.price }}€
